@@ -32,7 +32,5 @@ export default gql`
 
   type Mutation {
     addCity(cityName: String!): City
-    deleteCity(cityName: String!): City
-    updateCity(cityName: String!): City
   }
 `;

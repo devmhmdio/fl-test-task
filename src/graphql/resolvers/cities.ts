@@ -74,23 +74,5 @@ export default {
         throw new Error(err);
       }
     },
-    async deleteCity(parent, { id }, context, info) {
-      try {
-        return City.findOneAndDelete({ _id: id });
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-    async updateCity(parent, { id, cityName }, context, info) {
-      try {
-        let cityFields = {};
-        if (cityName) {
-          cityFields = { cityName };
-        }
-        return City.findByIdAndUpdate(id, { $set: cityFields }, { new: true });
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
   },
 };
