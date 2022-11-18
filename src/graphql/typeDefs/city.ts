@@ -7,11 +7,6 @@ export default gql`
     cityName: String!
   }
 
-  type LatLon {
-    lon: Float!
-    lat: Float!
-  }
-
   type FiveDayForecastDetail {
     dt_txt: String
     weather: [JSON]
@@ -20,13 +15,19 @@ export default gql`
 
   type FiveDayForecast {
     FiveDayForecastDetail: [FiveDayForecastDetail]
-    error: JSON
+    error: String
+  }
+
+  type ForecastAllCities {
+    FiveDayForecastDetail: [FiveDayForecastDetail]
+    City: String
   }
 
   type Query {
     getCities: [City]
-    getLatLon(cityName: String!): FiveDayForecast
+    getFiveDayWeatherForecast(cityName: String!): FiveDayForecast
     getCityByName(cityName: String!): City
+    getFiveDayWeatherForecastAllCities: [ForecastAllCities]
   }
 
   type Mutation {
