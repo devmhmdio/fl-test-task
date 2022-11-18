@@ -5,20 +5,19 @@ export default {
   Query: {
     async getCities() {
       try {
-        const cities = await City.find();
-        return cities;
+        return City.find();
       } catch (e) {
         throw new Error(e);
       }
     },
-    async getCityByName(parent, { cityName }, context, info) {
+    async getCityByName(parent, { cityName }, ctx, info) {
       try {
-        return await City.findOne({ cityName });
+        return City.findOne({ cityName });
       } catch (e) {
         throw new Error(e);
       }
     },
-    async getFiveDayWeatherForecast(parent, { cityName }, context, info) {
+    async getFiveDayWeatherForecast(parent, { cityName }, ctx, info) {
       const findCity = await City.findOne({ cityName });
       if (findCity) {
         try {
@@ -53,7 +52,6 @@ export default {
             `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.OPEN_WEATHER_KEY}`
           );
           const { city, list } = getFiveDayForecast.data;
-          // console.log("line 56", city.name);
           fiveDayForecastAllCities.push({
             City: city.name,
             FiveDayForecastDetail: list,
@@ -66,7 +64,7 @@ export default {
     },
   },
   Mutation: {
-    async addCity(parent, { cityName }, context, info) {
+    async addCity(parent, { cityName }, ctx, info) {
       try {
         const city = await new City({ cityName });
         return city.save();

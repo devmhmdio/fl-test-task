@@ -6,7 +6,7 @@
 - Clone the repo in your local folder
 - For first time, you will need to run ```npm i``` or ```npm install```
 - For the next steps you will have to rename the .env.sample file to .env file and fill in the values
-- To start the server you will either have to run ```npm run start``` for production server or ```npm run dev``` for development server (Wait for the server to get started and database to get connected)
+- To start the server you will either have to run ```npm run start``` for production server or ```npm run dev``` for development server (Wait for the server to get started and database to get connected, also GraphQL playground will be on same link as on which the server is running)
 
 ### Tech Stack Used
 - Typescript
