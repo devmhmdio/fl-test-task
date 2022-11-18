@@ -1,5 +1,4 @@
-import root from "./root";
 import city from "./city";
 
-const typesArray = [root, city];
+const typesArray = [city];
 export default typesArray;

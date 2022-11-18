@@ -5,9 +5,9 @@ import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 
 const server = new ApolloServer({ typeDefs, resolvers });
+connectDB();
 
 const PORT = env.getPort();
-server.listen({ port: process.env.PORT || PORT }).then(async ({ url }) => {
-  await connectDB();
+server.listen({ port: process.env.PORT || PORT }).then(({ url }) => {
   console.log(`Server is ready at ${url}`);
 });

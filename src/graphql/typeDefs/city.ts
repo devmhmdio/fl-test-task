@@ -1,17 +1,37 @@
 import { gql } from "apollo-server";
 
 export default gql`
+  scalar JSON
   type City {
     id: ID!
-    cityname: String!
+    cityName: String!
   }
-  extend type Query {
+
+  type LatLon {
+    lon: Float!
+    lat: Float!
+  }
+
+  type FiveDayForecastDetail {
+    dt_txt: String
+    weather: [JSON]
+    wind: JSON
+  }
+
+  type FiveDayForecast {
+    FiveDayForecastDetail: [FiveDayForecastDetail]
+    error: JSON
+  }
+
+  type Query {
     getCities: [City]
-    getCity(id: ID!): City
+    getLatLon(cityName: String!): FiveDayForecast
+    getCityByName(cityName: String!): City
   }
-  extend type Mutation {
-    addCity(cityname: String!): City
-    deleteCity(id: ID!): City
-    updateCity(cityname: String!, id: ID!): City
+
+  type Mutation {
+    addCity(cityName: String!): City
+    deleteCity(cityName: String!): City
+    updateCity(cityName: String!): City
   }
 `;

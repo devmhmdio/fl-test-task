@@ -1,3 +1,4 @@
+import axios from "axios";
 import City from "../../models/City";
 
 export default {
@@ -10,18 +11,40 @@ export default {
         throw new Error(e);
       }
     },
-    async getCity(parent, { id }, context, info) {
+    async getCityByName(parent, { cityName }, context, info) {
       try {
-        return City.findById(id);
-      } catch (err) {
-        throw new Error(err);
+        return await City.findOne({ cityName });
+      } catch (e) {
+        throw new Error(e);
+      }
+    },
+    async getLatLon(parent, { cityName }, context, info) {
+      const findCity = await City.findOne({ cityName });
+      if (findCity) {
+        try {
+          const res = await axios.get(
+            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${process.env.OPEN_WEATHER_KEY}`
+          );
+          const { lat, lon } = res.data.coord;
+          const getFiveDayForecast = await axios.get(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.OPEN_WEATHER_KEY}`
+          );
+          const { list } = getFiveDayForecast.data;
+          return { FiveDayForecastDetail: list };
+        } catch (e) {
+          throw new Error(e);
+        }
+      } else {
+        return {
+          error: "City not found in database",
+        };
       }
     },
   },
   Mutation: {
-    async addCity(parent, { cityname }, context, info) {
+    async addCity(parent, { cityName }, context, info) {
       try {
-        const city = await new City({ cityname });
+        const city = await new City({ cityName });
         return city.save();
       } catch (err) {
         throw new Error(err);
@@ -34,11 +57,11 @@ export default {
         throw new Error(err);
       }
     },
-    async updateCity(parent, { id, cityname }, context, info) {
+    async updateCity(parent, { id, cityName }, context, info) {
       try {
         let cityFields = {};
-        if (cityname) {
-          cityFields = { cityname };
+        if (cityName) {
+          cityFields = { cityName };
         }
         return City.findByIdAndUpdate(id, { $set: cityFields }, { new: true });
       } catch (err) {
